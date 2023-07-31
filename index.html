@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #0a0a0a, #3a4452);
+        }
+
+        .calculator {
+            border: 2px solid #717377;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(113, 115, 119, 0.5);
+            border-radius: 15px;
+            background: transparent;
+            min-height: fit-content;
+        }
+
+        #output {
+            width: 312px;
+            min-height: 60px;
+            padding: 0px 10px;
+            margin: 25px 10px;
+            background: transparent;
+            border: none;
+            color: white;
+            box-shadow: 0 3px 15px rgba(84, 84, 84, 0.5);
+            text-align: right;
+            font-size: 2.85rem;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+
+        button {
+            height: 60px;
+            width: 60px;
+            margin: 8px;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.11);
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        #equal {
+            background-color: rgb(169, 123, 38);
+        }
+
+        #devide,
+        #multiply,
+        #substract,
+        #addition,
+        #all-clear,
+        #delete,
+        #percent {
+            font-size: 1.25rem;
+            color: greenyellow;
+
+
+        }
+
+        #substract {
+            font-size: 1.85rem;
+        }
+
+        .orange-bg {
+            background-color: rgb(169, 123, 38);
+        }
+
+        /* .greenyello-bg{
+            background-color: greenyellow;
+            color: rgb(0, 0, 0);
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="result">
+            <div id="output">0</div>
+        </div>
+
+        <div class="row">
+            <button id="all-clear">AC</button>
+            <button id="delete">DEL</button>
+            <button id="percent">%</button>
+            <button id="devide">/</button>
+        </div>
+        <div class="row">
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button id="multiply">*</button>
+        </div>
+        <div class="row">
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button id="substract">-</button>
+        </div>
+        <div class="row">
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
+            <button id="addition">+</button>
+        </div>
+        <div class="row">
+            <button class="number">0</button>
+            <button class="number">00</button>
+            <button id="decimal">.</button>
+            <button id="equal">=</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- <script>
+        let resultElm = document.getElementById('output')
+        let allClear = document.getElementById('all-clear');
+        let deleteBtn = document.getElementById('delete');
+        let percentBtn = document.getElementById('percent');
+        let devideBtn = document.getElementById('devide');
+        let multiplyBtn = document.getElementById('multiply');
+        let substractBtn = document.getElementById('substract');
+        let additionBtn = document.getElementById('addition');
+        let equalBtn = document.getElementById('equal');
+        let decimalBtn = document.getElementById('decimal');
+
+        let numberBtns = document.querySelectorAll('.number');
+
+        // Variable declearation
+        let result = "";
+        let oparation = "";
+        let previousOparend = 0;
+
+        //Append number Function
+
+        let appendNumber = (number) => {
+
+            if (number === "." && result.includes('.')) {
+                return;
+            }
+
+            result += number;
+            // console.log(typeof result);
+            updateDisplay();
+
+        }
+
+
+        //Function to update display
+        const updateDisplay = () => {
+            if (oparation) {
+
+                resultElm.innerText = `${previousOparend} ${oparation} ${result}`
+
+            }
+            else {
+                resultElm.innerText = result;
+            }
+
+        }
+
+        // Function to work delete btn for oparetor
+        const updateDisplay2 = () => {
+            if (oparation === "" && previousOparend !== "") {
+                resultElm.innerText = previousOparend;
+                result = previousOparend;
+                previousOparend = "";
+            }
+        }
+
+        //Function to seclect oparetors
+        let oparetor = (oparetorValue) => {
+            if (result === "") return;
+
+
+            //  Condition to Calculate Result
+            if (oparetorValue !== "" && previousOparend !== "") {
+                resultCalculatingFunction();
+            }
+            if (result !== "" && oparetorValue == '%') {
+                percentCalculation();
+
+            }
+            oparation = oparetorValue;
+            previousOparend = result;  // jokhn e kono oparetor click hocche tkhn e result take previous oparend a pathiye dicchi and result take faka kore dicchi jate next digit ta result a empty string theke add hoi, AND jokhon 5+2 kore abar + debo tkhn same ata resultCalculatingFumction(); call hobe tkhon same process
+
+            result = "";
+            updateDisplay();
+
+        }
+
+        let percentCalculation = () => {
+            percentResult = result / 100;
+
+            result = percentResult.toString();
+            oparation = "";
+        }
+
+        // Function for CALCULATION
+        let resultCalculatingFunction = () => {
+            let calculatedResult;
+            let num1 = Number(previousOparend);
+            let num2 = Number(result);
+            // console.log(num1);
+            // console.log(`num 1 type ${typeof num1}`);
+            // console.log(num2);
+            // console.log(`num 1 type ${typeof num2}`);
+            // console.log(isNaN(num1));
+            // if (isNaN(num1) || isNaN(num2)) return; //??????????????????????????????????
+            switch (oparation) {
+                case '+':
+                    calculatedResult = num1 + num2;
+                    break;
+
+                case '-':
+                    calculatedResult = num1 - num2;
+                    break;
+
+                case '*':
+                    calculatedResult = num1 * num2;
+                    break;
+
+                case '/':
+                    calculatedResult = num1 / num2;
+                    break;
+
+                // case '%':
+                //     calculatedResult = num1 * (num2 / 100);
+                //     break;
+                default:
+                    return;
+            }
+            // console.log(oparetor);
+            // console.log(typeof oparetor);
+            // to check if the final result is contain decimal or not
+            if (Number.isInteger(calculatedResult)) {
+                result = calculatedResult.toString();
+            } else {
+                result = calculatedResult.toFixed(1);
+            }
+
+
+            result = calculatedResult.toString();
+            oparation = ""; // oparation empty kora holo karon 3+2 kore abar + tiple sei + er jnne jaiga khali korte hbe
+            previousOparend = "";
+
+
+        }
+
+        // Event listner on Buttons
+        numberBtns.forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                appendNumber(e.target.innerText)
+            })
+        });
+
+
+
+        // Event Listner on Decimal btn 
+        decimalBtn.addEventListener('click', (e) => {
+            appendNumber(e.target.innerText);
+        })
+
+
+
+        // EL on EQUAL BUTTON
+        equalBtn.addEventListener('click', () => {
+            if (result === "") return;
+            resultCalculatingFunction();
+            updateDisplay();
+        })
+
+
+
+        // Add EL on All oparetors
+        additionBtn.addEventListener('click', (e) => {
+            oparetor(e.target.innerText);
+
+        });
+
+        substractBtn.addEventListener('click', (e) => {
+            oparetor(e.target.innerText);
+
+        })
+
+        multiplyBtn.addEventListener('click', (e) => {
+            oparetor(e.target.innerText);
+
+        })
+
+        devideBtn.addEventListener('click', (e) => {
+
+            oparetor(e.target.innerText);
+        })
+
+        percentBtn.addEventListener('click', (e) => {
+            oparetor(e.target.innerText);
+        })
+
+
+
+        // All Clear EL
+        allClear.addEventListener('click', (e) => {
+
+            resultElm.innerText = 0;
+            result = "";
+            previousOparend = result;
+            oparation = "";
+        })
+
+        // EL on DELETE Button
+        deleteBtn.addEventListener('click', () => {
+            if (result === "" && oparation != "") {
+                oparation = "";
+                updateDisplay2();
+            }
+            else {
+                result = result.slice(0, -1);
+                updateDisplay(); // Remove the last character from the result string
+            }
+
+        });
+
+        // Changing colour while clicking
+        numberBtns.forEach((btn) => {
+            btn.addEventListener('mousedown', () => {
+                btn.classList.add('orange-bg');
+            });
+
+            btn.addEventListener('mouseup', () => {
+                btn.classList.remove('orange-bg');
+            });
+        });
+
+        decimalBtn.addEventListener('mousedown', () => {
+            decimalBtn.classList.add('orange-bg');
+        });
+
+        decimalBtn.addEventListener('mouseup', () => {
+            decimalBtn.classList.remove('orange-bg');
+        });
+
+    </script> -->
+</body>
+
+</html>
